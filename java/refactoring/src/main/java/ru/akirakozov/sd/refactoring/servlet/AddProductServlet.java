@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import ru.akirakozov.sd.refactoring.SQL;
 
 /**
  * @author akirakozov
@@ -20,8 +21,7 @@ public class AddProductServlet extends HttpServlet {
 
         try {
             try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-                String sql = "INSERT INTO PRODUCT " +
-                        "(NAME, PRICE) VALUES (\"" + name + "\"," + price + ")";
+                String sql = SQL.insertIntoProduct(name, price);
                 Statement stmt = c.createStatement();
                 stmt.executeUpdate(sql);
                 stmt.close();
