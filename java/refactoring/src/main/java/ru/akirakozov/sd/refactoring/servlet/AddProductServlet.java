@@ -8,7 +8,6 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 import ru.akirakozov.sd.refactoring.DBManager;
-import ru.akirakozov.sd.refactoring.SQL;
 
 /**
  * @author akirakozov

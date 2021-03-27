@@ -6,9 +6,6 @@ import ru.akirakozov.sd.refactoring.Product;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 class Servlet extends HttpServlet {
