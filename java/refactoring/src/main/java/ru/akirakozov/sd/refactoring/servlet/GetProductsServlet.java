@@ -2,7 +2,6 @@ package ru.akirakozov.sd.refactoring.servlet;
 
 import ru.akirakozov.sd.refactoring.SQL;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.sql.Statement;
 /**
  * @author akirakozov
  */
-public class GetProductsServlet extends HttpServlet {
+public class GetProductsServlet extends Servlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -24,15 +23,7 @@ public class GetProductsServlet extends HttpServlet {
                 ResultSet rs = stmt.executeQuery(SQL.selectAllFromProduct());
                 response.getWriter().println("<html><body>");
 
-                while (rs.next()) {
-                    String  name = rs.getString("name");
-                    int price  = rs.getInt("price");
-                    response.getWriter().println(name + "\t" + price + "</br>");
-                }
-                response.getWriter().println("</body></html>");
-
-                rs.close();
-                stmt.close();
+                writeResponse(response, stmt, rs);
             }
 
         } catch (Exception e) {

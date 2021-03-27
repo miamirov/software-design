@@ -2,7 +2,6 @@ package ru.akirakozov.sd.refactoring.servlet;
 
 import ru.akirakozov.sd.refactoring.SQL;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.sql.Statement;
 /**
  * @author akirakozov
  */
-public class QueryServlet extends HttpServlet {
+public class QueryServlet extends Servlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String command = request.getParameter("command");
@@ -27,15 +26,7 @@ public class QueryServlet extends HttpServlet {
                     response.getWriter().println("<html><body>");
                     response.getWriter().println("<h1>Product with max price: </h1>");
 
-                    while (rs.next()) {
-                        String  name = rs.getString("name");
-                        int price  = rs.getInt("price");
-                        response.getWriter().println(name + "\t" + price + "</br>");
-                    }
-                    response.getWriter().println("</body></html>");
-
-                    rs.close();
-                    stmt.close();
+                    writeResponse(response, stmt, rs);
                 }
 
             } catch (Exception e) {
@@ -49,15 +40,8 @@ public class QueryServlet extends HttpServlet {
                     response.getWriter().println("<html><body>");
                     response.getWriter().println("<h1>Product with min price: </h1>");
 
-                    while (rs.next()) {
-                        String  name = rs.getString("name");
-                        int price  = rs.getInt("price");
-                        response.getWriter().println(name + "\t" + price + "</br>");
-                    }
-                    response.getWriter().println("</body></html>");
+                    writeResponse(response, stmt, rs);
 
-                    rs.close();
-                    stmt.close();
                 }
 
             } catch (Exception e) {

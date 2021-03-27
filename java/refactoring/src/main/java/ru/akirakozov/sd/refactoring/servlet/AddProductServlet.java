@@ -1,6 +1,5 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -12,7 +11,7 @@ import ru.akirakozov.sd.refactoring.SQL;
 /**
  * @author akirakozov
  */
-public class AddProductServlet extends HttpServlet {
+public class AddProductServlet extends Servlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
