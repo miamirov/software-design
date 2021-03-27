@@ -1,5 +1,7 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
+import ru.akirakozov.sd.refactoring.DBManager;
+import ru.akirakozov.sd.refactoring.Product;
 import ru.akirakozov.sd.refactoring.SQL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,80 +11,66 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * @author akirakozov
  */
 public class QueryServlet extends Servlet {
+    public QueryServlet(DBManager dbManager) {
+        super(dbManager);
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String command = request.getParameter("command");
 
         if ("max".equals(command)) {
             try {
-                try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-                    Statement stmt = c.createStatement();
-                    ResultSet rs = stmt.executeQuery(SQL.minPrice());
+                    List<Product> products = dbManager.selectProducts("max");
                     response.getWriter().println("<html><body>");
                     response.getWriter().println("<h1>Product with max price: </h1>");
+                    GetProductsServlet.writeResponse(response, products);
 
-                    writeResponse(response, stmt, rs);
-                }
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else if ("min".equals(command)) {
             try {
-                try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-                    Statement stmt = c.createStatement();
-                    ResultSet rs = stmt.executeQuery(SQL.maxPrice());
-                    response.getWriter().println("<html><body>");
-                    response.getWriter().println("<h1>Product with min price: </h1>");
+                List<Product> products = dbManager.selectProducts("min");
+                response.getWriter().println("<html><body>");
+                response.getWriter().println("<h1>Product with min price: </h1>");
+                writeResponse(response, products);
 
-                    writeResponse(response, stmt, rs);
-
-                }
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else if ("sum".equals(command)) {
             try {
-                try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-                    Statement stmt = c.createStatement();
-                    ResultSet rs = stmt.executeQuery(SQL.sumPrice());
-                    response.getWriter().println("<html><body>");
-                    response.getWriter().println("Summary price: ");
-
-                    if (rs.next()) {
-                        response.getWriter().println(rs.getInt(1));
-                    }
-                    response.getWriter().println("</body></html>");
-
-                    rs.close();
-                    stmt.close();
+                Long result = dbManager.agregateProducts("sum");
+                response.getWriter().println("<html><body>");
+                response.getWriter().println("Summary price: ");
+                if (result != null) {
+                    response.getWriter().println(result);
                 }
+
+                response.getWriter().println("</body></html>");
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else if ("count".equals(command)) {
             try {
-                try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-                    Statement stmt = c.createStatement();
-                    ResultSet rs = stmt.executeQuery(SQL.countProduct());
-                    response.getWriter().println("<html><body>");
-                    response.getWriter().println("Number of products: ");
-
-                    if (rs.next()) {
-                        response.getWriter().println(rs.getInt(1));
-                    }
-                    response.getWriter().println("</body></html>");
-
-                    rs.close();
-                    stmt.close();
+                Long result = dbManager.agregateProducts("count");
+                response.getWriter().println("<html><body>");
+                response.getWriter().println("Number of products: ");
+                if (result != null) {
+                    response.getWriter().println(result);
                 }
+
+                response.getWriter().println("</body></html>");
 
             } catch (Exception e) {
                 throw new RuntimeException(e);

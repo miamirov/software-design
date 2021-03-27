@@ -2,6 +2,7 @@ package ru.akirakozov.sd.refactoring.servlet;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.akirakozov.sd.refactoring.DBManager;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GetProductsServletTest extends AbstractServletTest {
     protected GetProductsServletTest() {
-        super(new GetProductsServlet());
+        super(new GetProductsServlet(new DBManager("jdbc:sqlite:test.db")));
     }
 
     @Test

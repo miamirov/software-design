@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+
+import ru.akirakozov.sd.refactoring.DBManager;
 import ru.akirakozov.sd.refactoring.SQL;
 
 /**
@@ -13,18 +15,17 @@ import ru.akirakozov.sd.refactoring.SQL;
  */
 public class AddProductServlet extends Servlet {
 
+    public AddProductServlet(DBManager dbManager) {
+        super(dbManager);
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String name = request.getParameter("name");
         long price = Long.parseLong(request.getParameter("price"));
 
         try {
-            try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-                String sql = SQL.insertIntoProduct(name, price);
-                Statement stmt = c.createStatement();
-                stmt.executeUpdate(sql);
-                stmt.close();
-            }
+            dbManager.insertProduct(name, price);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

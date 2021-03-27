@@ -16,11 +16,11 @@ public class SQL {
         return "SELECT * FROM PRODUCT";
     }
 
-    public static String minPrice() {
+    public static String maxPrice() {
         return "SELECT * FROM PRODUCT ORDER BY PRICE DESC LIMIT 1";
     }
 
-    public static String maxPrice() {
+    public static String minPrice() {
         return "SELECT * FROM PRODUCT ORDER BY PRICE LIMIT 1";
     }
 
